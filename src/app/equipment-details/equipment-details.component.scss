@@ -1,0 +1,75 @@
+table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  table.results {
+      td {
+          width: 50%;
+      }
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  input[type="text"],
+  input[type="number"] {
+    width: 100%;
+    padding: 6px 10px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    outline: none;
+  }
+  
+  input[type="text"]:focus,
+  input[type="number"]:focus {
+    border-bottom: 2px solid dodgerblue;
+  }
+  
+  input[type="submit"] {
+    background-color: dodgerblue;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 4px;
+  }
+  
+  input[type="submit"]:hover {
+    background-color: #4CAF50;
+  }
+  
+  .error {
+    color: red;
+    font-style: italic;
+  }
+
+  .center {
+    text-align: center;
+  }
+  
+  .button-container {
+    margin-top: 20px;
+  }
+  
+  .button-container button {
+    margin: 5px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .button-container button:hover {
+    background-color: #45a049;
+  }
+  
+  

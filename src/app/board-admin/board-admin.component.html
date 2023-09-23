@@ -1,0 +1,16 @@
+<div *ngIf="!dataLoaded">
+  <app-loading-spinner [message]="'Loading data...'"></app-loading-spinner>
+</div>
+<div *ngIf="dataLoaded && !modelDataSelected">
+  <h2>Model years</h2>
+  <ul class="year-list">
+    <li *ngFor="let year of equipmentDataKeys">
+      <a href="javascript:void(0);" (click)="loadEquipmentData(year)">{{ year }}</a>
+    </li>
+  </ul>
+</div>
+
+
+<div *ngIf="modelDataSelected">
+  <app-equipment-list [equipmentList]="currentEquipmentData" [modelYear]="modelYear"></app-equipment-list>
+</div>
