@@ -29,12 +29,17 @@ export class EquipmentManagerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.fetchAllModelYears();
+  }
+
+  fetchAllModelYears() {
     this.userService.getAllModelYears().subscribe(
       (response) => {
         this.dataLoaded = true;
         this.equipmentYears = response.years.sort();
       },
       (error) => {
+        this.dataLoaded = true
         console.error(error);
       }
     );
@@ -155,14 +160,13 @@ export class EquipmentManagerComponent implements OnInit {
       (response) => {
         console.log('Next year data generated:', response);
         this.dataLoaded = true;
+        this.fetchAllModelYears();
       },
       (error) => {
         this.dataLoaded = true;
         console.error('Error generating next year data:', error);
       }
     );
-
-    // Hide the generate form (if needed)
     this.showGenerateForm = false;
   }
 
