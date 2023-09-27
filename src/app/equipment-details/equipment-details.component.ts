@@ -33,7 +33,6 @@ export class EquipmentDetailsComponent {
   };
 
   private calculateDefaultValues(): void {
-    const currYear = new Date().getFullYear();
     if (this.equipment) {
       const currYear = new Date().getFullYear();
 
@@ -65,9 +64,9 @@ export class EquipmentDetailsComponent {
         this.equipment.Overhaul_Labor_Ownership_cost_Monthly = this.equipment.Hourly_Wage * this.equipment.Annual_Overhaul_Labor_Hours / 12 / this.equipment.Usage_rate;
         
         this.equipment.Overhaul_Parts_Ownership_cost_Monthly = this.equipment.Annual_Overhaul_Parts_cost_rate * this.equipment.Original_price / 12 / this.equipment.Usage_rate;
-        
-        //operating cost
+    
         this.equipment.Total_ownership_cost_hourly = (this.equipment.Depreciation_Ownership_cost_Monthly + this.equipment.Cost_of_Facilities_Capital_Ownership_cost_Monthly + this.equipment.Overhead_Ownership_cost_Monthly + this.equipment.Overhaul_Labor_Ownership_cost_Monthly + this.equipment.Overhaul_Parts_Ownership_cost_Monthly) / 176;
+        //operating cost
         this.equipment.Field_Labor_Operating_cost_Hourly = this.equipment.Annual_Field_Labor_Hours*this.equipment.Hourly_Wage / 12 / this.equipment.Monthly_use_hours;
         this.equipment.Field_Parts_Operating_cost_Hourly = this.equipment.Annual_Field_Repair_Parts_and_misc_supply_parts_Cost_rate * this.equipment.Original_price / 12 / this.equipment.Monthly_use_hours;
         this.equipment.Ground_Engaging_Component_Cost_Operating_cost_Hourly = this.equipment.Annual_Ground_Engaging_Component_rate * this.equipment.Original_price / 12 / this.equipment.Monthly_use_hours;

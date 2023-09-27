@@ -65,4 +65,12 @@ export class UserService {
   editFuelCosts(fuelCosts: any): Observable<any> {
     return this.http.put(API_URL + 'editfuelcosts', fuelCosts);
   }
+
+  getHourlyWage(): Observable<any> {
+    return this.http.get(API_URL + 'hrlabourwage');
+  }
+
+  editHourlyWage(labourWage: any): Observable<any> {
+    return this.http.put(API_URL + 'edithrlabourwage', labourWage);
+  }
 }

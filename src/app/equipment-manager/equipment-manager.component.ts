@@ -14,13 +14,18 @@ export class EquipmentManagerComponent implements OnInit {
   dataLoaded = false;
   showGenerateForm = false;
   fuelCostsForm?: FormGroup;
+  labourWageForm?: FormGroup;
   showFuelForm = false;
+  showWageForm = false;
   constructor(private userService: UserService, private fb: FormBuilder) {
     this.fuelCostsForm = this.fb.group({
       gasoline_price: 0,  // Field for gasoline price
       diesel_price: 0,    // Field for diesel price
       other: 0            // Field for other fuel type
     });
+    this.labourWageForm = this.fb.group({
+      hourly_wage: 0
+    })
   }
 
   ngOnInit(): void {
@@ -40,6 +45,8 @@ export class EquipmentManagerComponent implements OnInit {
       this.showGenerateForm = true;
     } else if (year === 'fuel') {
       this.loadFuelCosts();
+    } else if (year ==='wage') {
+      this.loadWageCosts();
     } else{
       this.dataLoaded = false;
       this.selectedYear = year;
@@ -61,7 +68,22 @@ export class EquipmentManagerComponent implements OnInit {
     this.userService.getFuelCosts().subscribe(
       (response) => {
         this.dataLoaded = true;
-        this.setFormValues(response.fuelCosts);  // Patch values to the form
+        this.setFuelFormValues(response.fuelCosts);  // Patch values to the form
+      },
+      (error) => {
+        this.dataLoaded = true;
+        console.error(error);
+      }
+    );
+  }
+
+  loadWageCosts() {
+    this.dataLoaded = false;
+    this.showWageForm = true;
+    this.userService.getHourlyWage().subscribe(
+      (response) => {
+        this.dataLoaded = true;
+        this.setWageFormValues(response.wageCosts);  // Patch values to the form
       },
       (error) => {
         this.dataLoaded = true;
@@ -92,19 +114,50 @@ export class EquipmentManagerComponent implements OnInit {
     this.showFuelForm = false;
   }
 
-  setFormValues(response: any) {
+  editHourlyWage() {
+    if (this.labourWageForm) {
+      this.dataLoaded = false;
+      const editedWageForm = this.labourWageForm.value;
+      this.userService.editHourlyWage(editedWageForm).subscribe(
+        (response) => {
+          this.showWageForm = false;
+          this.dataLoaded = true;
+          console.log('Wage costs edited successfully:', response);
+        },
+        (error) => {
+          this.dataLoaded = true;
+          console.error('Error editing Wage costs:', error);
+        }
+      );
+    }
+  }
+
+  closeWageForm() {
+    this.showWageForm = false;
+  }
+
+  setFuelFormValues(response: any) {
     if (this.fuelCostsForm) {
       this.fuelCostsForm.patchValue(response);
     }
   }
 
+  setWageFormValues(response: any) {
+    if (this.labourWageForm) {
+      this.labourWageForm.patchValue(response);
+    }
+  }
+
 
   generateNextYearData(priceIncreaseRate: number) {
+    this.dataLoaded = false;
     this.userService.generateNextYearEquipData(priceIncreaseRate).subscribe(
       (response) => {
         console.log('Next year data generated:', response);
+        this.dataLoaded = true;
       },
       (error) => {
+        this.dataLoaded = true;
         console.error('Error generating next year data:', error);
       }
     );
