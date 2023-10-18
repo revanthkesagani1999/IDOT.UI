@@ -29,6 +29,8 @@ import { EquipmentDetailsComponent } from './equipment-details/equipment-details
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 import { EquipmentManagerComponent } from './equipment-manager/equipment-manager.component';
 import { EditFormComponent } from './edit-form/edit-form.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,7 +48,8 @@ import { EditFormComponent } from './edit-form/edit-form.component';
     EquipmentDetailsComponent,
     LoadingSpinnerComponent,
     EquipmentManagerComponent,
-    EditFormComponent
+    EditFormComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +66,8 @@ import { EditFormComponent } from './edit-form/edit-form.component';
      MatListModule,
      MatTabsModule,
      FormsModule,
-     ReactiveFormsModule
+     ReactiveFormsModule,
+     MatDialogModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]

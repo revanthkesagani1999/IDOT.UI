@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../_services/user.service';
 import { Equipment } from '../board-admin/board-admin.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog'; 
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 @Component({
   selector: 'app-equipment-manager',
   templateUrl: './equipment-manager.component.html',
@@ -17,7 +19,12 @@ export class EquipmentManagerComponent implements OnInit {
   labourWageForm?: FormGroup;
   showFuelForm = false;
   showWageForm = false;
-  constructor(private userService: UserService, private fb: FormBuilder) {
+  showConfirmationDialog = false;
+  generateNewDataConfirmed = false;
+  confirmationMessage = 'Do you want to update all year\'s data based on the new year data?';
+
+
+  constructor(private userService: UserService, private fb: FormBuilder, private dialog: MatDialog) {
     this.fuelCostsForm = this.fb.group({
       gasoline_price: 0,  // Field for gasoline price
       diesel_price: 0,    // Field for diesel price
@@ -153,10 +160,28 @@ export class EquipmentManagerComponent implements OnInit {
     }
   }
 
+  
 
   generateNextYearData(priceIncreaseRate: number) {
+    this.openConfirmationDialog(priceIncreaseRate);
+  }
+  
+  openConfirmationDialog(priceIncreaseRate: number) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      disableClose: true,
+      data: {
+        message: this.confirmationMessage,
+      },
+    });
+  
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      this.continueGeneratingNextYearData(priceIncreaseRate, result);
+    });
+  }
+  
+  continueGeneratingNextYearData(priceIncreaseRate: number, dataUpdate: boolean) {
     this.dataLoaded = false;
-    this.userService.generateNextYearEquipData(priceIncreaseRate).subscribe(
+    this.userService.generateNextYearEquipData(priceIncreaseRate, dataUpdate).subscribe(
       (response) => {
         console.log('Next year data generated:', response);
         this.dataLoaded = true;
@@ -169,6 +194,7 @@ export class EquipmentManagerComponent implements OnInit {
     );
     this.showGenerateForm = false;
   }
+  
 
   onCancelEdit() {
     this.showGenerateForm = false;

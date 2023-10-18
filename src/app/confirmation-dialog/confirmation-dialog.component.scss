@@ -1,0 +1,30 @@
+/* confirmation-dialog.component.css */
+
+.confirmation-dialog {
+    background-color: #fff; /* Background color for the dialog */
+    border: 1px solid #ccc; /* Border around the dialog */
+    padding: 20px; /* Padding inside the dialog */
+    border-radius: 5px; /* Rounded corners for the dialog */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle elevation effect */
+    text-align: center; /* Center-align the content */
+  }
+  
+  .confirmation-dialog p {
+    font-size: 16px; /* Font size for the message */
+    margin-bottom: 20px; /* Spacing below the message */
+  }
+  
+  .confirmation-dialog button {
+    margin-right: 10px; /* Spacing between buttons */
+    padding: 10px 20px; /* Padding for the buttons */
+    background-color: #007bff; /* Button background color */
+    color: #fff; /* Button text color */
+    border: none; /* Remove button border */
+    border-radius: 5px; /* Rounded corners for buttons */
+    cursor: pointer; /* Add a pointer cursor on hover */
+  }
+  
+  .confirmation-dialog button:hover {
+    background-color: #0056b3; /* Button background color on hover */
+  }
+  

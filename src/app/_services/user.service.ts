@@ -54,8 +54,8 @@ export class UserService {
     return this.http.put(API_URL + 'editEquipment', body);
   }
 
-  generateNextYearEquipData(priceIncreaseRate: number): Observable<any> {
-    return this.http.post(API_URL + 'generate-data', {priceIncreaseRate});
+  generateNextYearEquipData(priceIncreaseRate: number, dataUpdate: boolean): Observable<any> {
+    return this.http.post(API_URL + 'generate-data', {priceIncreaseRate,dataUpdate});
   }
 
   getFuelCosts(): Observable<any> {

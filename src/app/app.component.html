@@ -6,17 +6,11 @@
         <a href="/home" class="nav-link" routerLink="home">Home </a>
       </li>
       <li *ngIf="isLoggedIn" class="nav-item">
-        <a href="/admin" class="nav-link" routerLink="admin">Equipments</a>
+        <a routerLink="/admin" class="nav-link" routerLink="admin">Equipments</a>
       </li>
       <li *ngIf="isLoggedIn && this.showAdminBoard" class="nav-item">
-        <a href="/manage-equipment-data" class="nav-link" routerLink="manage-equipment-data">Manage Equipment Data</a>
+        <a  (click)="navigateTo('/manage-equipment-data')" class="nav-link" routerLink="manage-equipment-data">Manage Equipment Data</a>
       </li>
-      <!-- <li class="nav-item" *ngIf="showModeratorBoard">
-        <a href="/mod" class="nav-link" routerLink="mod">Moderator Board</a>
-      </li> -->
-      <!-- <li class="nav-item">
-        <a href="/user" class="nav-link" *ngIf="isLoggedIn" routerLink="user">User</a>
-      </li> -->
     </ul>
 
     <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn">
