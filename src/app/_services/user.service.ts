@@ -73,4 +73,8 @@ export class UserService {
   editHourlyWage(labourWage: any): Observable<any> {
     return this.http.put(API_URL + 'edithrlabourwage', labourWage);
   }
+
+  getCurrentYear(): Observable<any> {
+    return this.http.get(API_URL + 'currentyear');
+  }
 }

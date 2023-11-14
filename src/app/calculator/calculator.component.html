@@ -2,7 +2,7 @@
     <div class="d-flex page__box p-3 mt-2">Calculator</div>
     <div class="page__content shadow p-3 position-relative">
       <div >
-        <mat-tab-group preserveContent (selectedTabChange)="onTabChange($event)">
+        <mat-tab-group #tabGroup preserveContent (selectedTabChange)="onTabChange($event)">
           <mat-tab label="Cost recovery">
             <div class="float-container">
   
@@ -142,7 +142,7 @@
                   <div class="table-cell">Model Year</div>
                   <div class="table-cell">Fuel Type</div>
                 </div>
-                <div *ngFor="let model of savedModels" class="table-row">
+                <div *ngFor="let model of savedModels" class="table-row" (click)="savedModelClicked(model)">
                   <div class="table-cell">{{ model.category }}</div>
                   <div class="table-cell">{{ model.subcategory }}</div>
                   <div class="table-cell">{{ model.size }}</div>

@@ -137,16 +137,26 @@ export class EquipmentListComponent {
   
 
   onEquipmentCardDoubleClick(equipment: Equipment): void {
-    if (!this.isManageEquipment) {
-      this.router.navigate(['/equipment-details'], {
-        state: {
-          modelYear: this.modelYear,
-          equipment: equipment,
-        },
-      });
-    } else {
-
-    }
+    this.userService.getCurrentYear().subscribe(
+      (data: any) => {
+        const currentWorkingYear = data.currentYear.currentyear; // Assuming your API returns the current year in a field named 'year'
+        console.log('Current Year:', currentWorkingYear);
+        if (!this.isManageEquipment) {
+          this.router.navigate(['/equipment-details'], {
+            state: {
+              modelYear: this.modelYear,
+              equipment: equipment,
+              currYear: currentWorkingYear
+            },
+          });
+        } else {
+    
+        }
+      },
+      (error: any) => {
+        console.error('Error fetching current year:', error);
+      }
+    );
   }
 
   onEditIconClick(event: Event, equipment: Equipment): void {
@@ -306,25 +316,25 @@ export class EquipmentListComponent {
     this.isListEmpty = this.filteredEquipmentList.length === 0;
   }
   
-  public onSortChange(): void {
-    if (this.sortOrder === 'asc') {
-      this.filteredEquipmentList.sort((a, b) => {
-        if (a.Size && b.Size) {
-          return a.Size.localeCompare(b.Size);
-        } else {
-          return 0;
-        }
-      });
-    } else {
-      this.filteredEquipmentList.sort((a, b) => {
-        if (a.Size && b.Size) {
-          return b.Size.localeCompare(a.Size);
-        } else {
-          return 0;
-        }
-      });
-    }
-  }
+  // public onSortChange(): void {
+  //   if (this.sortOrder === 'asc') {
+  //     this.filteredEquipmentList.sort((a, b) => {
+  //       if (a.Size && b.Size) {
+  //         return a.Size.localeCompare(b.Size);
+  //       } else {
+  //         return 0;
+  //       }
+  //     });
+  //   } else {
+  //     this.filteredEquipmentList.sort((a, b) => {
+  //       if (a.Size && b.Size) {
+  //         return b.Size.localeCompare(a.Size);
+  //       } else {
+  //         return 0;
+  //       }
+  //     });
+  //   }
+  // }
 
   prevPage() {
     // go to previous page

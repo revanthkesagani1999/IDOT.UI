@@ -27,6 +27,12 @@ table {
     border-bottom: 1px solid #ddd;
     outline: none;
   }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
   
   input[type="text"]:focus,
   input[type="number"]:focus {
@@ -71,5 +77,54 @@ table {
   .button-container button:hover {
     background-color: #45a049;
   }
+
+  .costs-container {
+    margin: 20px;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .results {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .results td,
+  .results th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .results tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .results tr:hover {
+    background-color: #ddd;
+  }
+  
+  .results th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  h2 {
+    color: #333;
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd;
+    margin-top: 20px;
+  }
+  
+  /* Strong tag for emphasizing totals */
+  strong {
+    color: #000;
+    font-weight: bold;
+  }
+  
+  /* Additional styling can be added here for custom look and feel */
+  
   
   
