@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../_services/user.service';
-import data from '../../assets/data/wheel_tractors.json';
+import { Router } from '@angular/router';
 
 export interface Equipment{
   Category: string;
@@ -61,7 +61,7 @@ export class BoardAdminComponent implements OnInit {
   dataLoaded = false;
   modelDataSelected = false;
   modelYear?: string = "";
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
     this.userService.getAdminBoard().subscribe({
@@ -97,20 +97,22 @@ export class BoardAdminComponent implements OnInit {
   }
 
   loadEquipmentData(year: string) {
-    this.dataLoaded = false;
-    // Fetch model data for the selected year
-    this.userService.getModelDataByYear(year).subscribe(
-      (response) => {
-        this.currentEquipmentData = response.data;
-        this.modelDataSelected = true;
-        this.dataLoaded = true;
-        this.modelYear = year;
-      },
-      (error) => {
-        // Handle error while fetching model data
-        console.error(`Error fetching model data for year ${year}:`, error);
-      }
-    );
+    // this.dataLoaded = false;
+    // // Fetch model data for the selected year
+    // this.userService.getModelDataByYear(year).subscribe(
+    //   (response) => {
+    //     this.currentEquipmentData = response.data;
+    //     this.modelDataSelected = true;
+    //     this.dataLoaded = true;
+    //     this.modelYear = year;
+    //   },
+    //   (error) => {
+    //     // Handle error while fetching model data
+    //     console.error(`Error fetching model data for year ${year}:`, error);
+    //   }
+    // );
 
+    this.router.navigate(['/equipment-list'], { queryParams: { modelYear: year } });
+ 
   }
 }

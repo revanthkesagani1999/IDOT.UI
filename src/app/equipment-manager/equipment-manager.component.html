@@ -53,13 +53,14 @@
   </div>
   <div class="backdrop" *ngIf="fuelCostsForm && !showGenerateForm"></div>
   
-<div *ngIf="currentEquipmentData.length > 0 && dataLoaded && !showGenerateForm">
+<!-- <div *ngIf="currentEquipmentData.length > 0 && dataLoaded && !showGenerateForm">
     <app-equipment-list
       [equipmentList]="currentEquipmentData"
       [modelYear]="selectedYear"
       [isManageEquipment]="true"
     ></app-equipment-list>
-  </div>
+  </div> -->
+  <router-outlet></router-outlet>
 
   <div *ngIf="showGenerateForm">
     <app-edit-form [showGenerateForm]="showGenerateForm"

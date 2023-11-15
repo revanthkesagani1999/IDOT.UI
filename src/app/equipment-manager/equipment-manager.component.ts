@@ -4,6 +4,7 @@ import { Equipment } from '../board-admin/board-admin.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog'; 
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-equipment-manager',
   templateUrl: './equipment-manager.component.html',
@@ -24,7 +25,7 @@ export class EquipmentManagerComponent implements OnInit {
   confirmationMessage = 'Do you want to update all year\'s data based on the new year data?';
 
 
-  constructor(private userService: UserService, private fb: FormBuilder, private dialog: MatDialog) {
+  constructor(private userService: UserService, private fb: FormBuilder, private dialog: MatDialog, private router: Router) {
     this.fuelCostsForm = this.fb.group({
       gasoline_price: 0,  // Field for gasoline price
       diesel_price: 0,    // Field for diesel price
@@ -60,17 +61,19 @@ export class EquipmentManagerComponent implements OnInit {
     } else if (year ==='wage') {
       this.loadWageCosts();
     } else{
-      this.dataLoaded = false;
-      this.selectedYear = year;
-      this.userService.getModelDataByYear(year).subscribe(
-        (response) => {
-          this.currentEquipmentData = response.data;
-          this.dataLoaded = true;
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
+      // this.dataLoaded = false;
+      // this.selectedYear = year;
+      // this.userService.getModelDataByYear(year).subscribe(
+      //   (response) => {
+      //     this.currentEquipmentData = response.data;
+      //     this.dataLoaded = true;
+      //   },
+      //   (error) => {
+      //     console.error(error);
+      //   }
+      // );
+      this.router.navigate(['/equipment-list'], { queryParams: { modelYear: year, isManageEquipment: true } });
+ 
     }
   }
 
@@ -175,7 +178,9 @@ export class EquipmentManagerComponent implements OnInit {
     });
   
     dialogRef.afterClosed().subscribe((result: boolean) => {
-      this.continueGeneratingNextYearData(priceIncreaseRate, result);
+      if (result) {
+        this.continueGeneratingNextYearData(priceIncreaseRate, result);
+      }
     });
   }
   

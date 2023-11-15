@@ -11,6 +11,7 @@ import { BoardAdminComponent } from './board-admin/board-admin.component';
 import { EquipmentDetailsComponent } from './equipment-details/equipment-details.component';
 import { CalculatorComponent } from './calculator/calculator.component';
 import { EquipmentManagerComponent } from './equipment-manager/equipment-manager.component';
+import { EquipmentListComponent } from './equipment-list/equipment-list.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -19,11 +20,12 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'user', component: BoardUserComponent },
   { path: 'mod', component: BoardModeratorComponent },
-  { path: 'admin', component: BoardAdminComponent },
+  { path: 'equipments', component: BoardAdminComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'equipment-details', component: EquipmentDetailsComponent },
   { path: 'calculator', component: CalculatorComponent },
-  { path: 'manage-equipment-data', component: EquipmentManagerComponent}
+  { path: 'manage-equipment-data', component: EquipmentManagerComponent},
+  { path: 'equipment-list', component: EquipmentListComponent}
 ];
 
 @NgModule({

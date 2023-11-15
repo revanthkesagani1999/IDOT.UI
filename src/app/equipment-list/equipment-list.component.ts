@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Equipment } from '../board-admin/board-admin.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../_services/user.service';
 
 
@@ -36,19 +36,36 @@ export class EquipmentListComponent {
   sizesMap: { [category: string]: string[] } = {}; // Holds mapping of categories to sizes
   selectedSubCategory: string = ''; // Holds the selected Sub-category
   selectedSize: string = ''; // Holds the selected Size
-  constructor(private router: Router, private userService: UserService) {}
+  constructor(private router: Router, private userService: UserService, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.filteredEquipmentList = this.equipmentList;
-
-    // Extract list of sub-categories from equipmentList
-    this.subCategories = Array.from(
-      new Set(this.equipmentList.map(equipment => equipment.Sub_Category))
-    );
+    this.route.queryParams.subscribe(params => {
+      // Assuming modelYear is passed as a query parameter
+      this.modelYear = params['modelYear'];
+      this.isManageEquipment = params['isManageEquipment'];
   
-    // Initialize subCategoriesMap
-    this.subCategoriesMap = this.createSubCategoriesMap(this.equipmentList);
+      if (this.modelYear) {
+        this.loadEquipmentData(this.modelYear);
+      }
+    });
+   
  
+  }
+
+  loadEquipmentData(modelYear: string) {
+    this.spinnerOn = true;
+    this.userService.getModelDataByYear(modelYear).subscribe(data => {
+      this.spinnerOn = false;
+      this.equipmentList = data.data;
+      this.filteredEquipmentList = this.equipmentList;
+
+      this.subCategories = Array.from(
+        new Set(this.equipmentList.map(equipment => equipment.Sub_Category))
+      );
+    
+      // Initialize subCategoriesMap
+      this.subCategoriesMap = this.createSubCategoriesMap(this.equipmentList);
+    });
   }
 
   private createSubCategoriesMap(equipmentList: Equipment[]): { [category: string]: string[] } {

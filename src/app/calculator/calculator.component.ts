@@ -197,7 +197,7 @@ export class CalculatorComponent {
 
   savedModelClicked(model: any) {
     const { category, modelYear, size, subcategory, fueltype, equipment } = model;
-    this.unadjustedRate = this.roundTo(equipment.Total_ownership_cost_hourly, 2);
+    this.unadjustedRate = this.roundTo(equipment.Total_ownership_cost_hourly * 176, 2);
     this.operCost = this.roundTo(equipment.Total_operating_cost, 2);
     this.updateRate();
     this.updateStandByRate();
