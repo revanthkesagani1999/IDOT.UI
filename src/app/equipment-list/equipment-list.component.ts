@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Equipment } from '../board-admin/board-admin.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../_services/user.service';
+import { NotificationService } from '../_services/notification.service';
 
 
 @Component({
@@ -36,7 +37,8 @@ export class EquipmentListComponent {
   sizesMap: { [category: string]: string[] } = {}; // Holds mapping of categories to sizes
   selectedSubCategory: string = ''; // Holds the selected Sub-category
   selectedSize: string = ''; // Holds the selected Size
-  constructor(private router: Router, private userService: UserService, private route: ActivatedRoute) {}
+
+  constructor(private router: Router, private userService: UserService, private route: ActivatedRoute, private notificationService: NotificationService) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -171,6 +173,7 @@ export class EquipmentListComponent {
         }
       },
       (error: any) => {
+        this.notificationService.triggerNotification('Error fetching current year', 'error');
         console.error('Error fetching current year:', error);
       }
     );
@@ -191,6 +194,8 @@ export class EquipmentListComponent {
       this.userService.editEquipment(updatedEquipment,year).subscribe(
         (response) => {
           console.log('Equipment updated successfully:', response);
+          this.notificationService.triggerNotification('Equipment updated successfully', 'success');
+
           // Close the edit form
           this.showEditForm = false;
           // Fetch the updated equipment list
@@ -198,6 +203,7 @@ export class EquipmentListComponent {
         },
         (error) => {
           this.spinnerOn = false;
+          this.notificationService.triggerNotification('Error updating equipment', 'error');
           console.error('Error updating equipment:', error);
         }
       );
@@ -215,6 +221,7 @@ export class EquipmentListComponent {
         },
         (error) => {
           this.spinnerOn = false;
+          this.notificationService.triggerNotification('Error loading equipment', 'error');
           console.error('Error loading equipment:',error);
         }
       );

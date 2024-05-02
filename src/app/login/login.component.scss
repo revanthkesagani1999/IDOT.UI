@@ -30,3 +30,13 @@ label {
   -webkit-border-radius: 50%;
   border-radius: 50%;
 }
+
+.forgot-password-link {
+  display: block;
+  margin-top: 15px;
+  cursor: pointer;
+  color: #007bff;
+}
+.forgot-password-link:hover {
+  text-decoration: underline;
+}

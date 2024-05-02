@@ -31,6 +31,10 @@ import { EquipmentManagerComponent } from './equipment-manager/equipment-manager
 import { EditFormComponent } from './edit-form/edit-form.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { NotificationComponent } from './notification/notification.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,7 +53,10 @@ import { MatDialogModule } from '@angular/material/dialog';
     LoadingSpinnerComponent,
     EquipmentManagerComponent,
     EditFormComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
+    NotificationComponent
   ],
   imports: [
     BrowserModule,

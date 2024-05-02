@@ -44,7 +44,7 @@
   <div *ngIf="labourWageForm && showWageForm && !showGenerateForm" class="fuel-costs-edit-form">
     <h2>Edit Labour Wage</h2>
     <form [formGroup]="labourWageForm">
-      <label for="hourly_wage">Hourly labour wage:</label>
+      <label for="hourly_wage">Hourly labor wage:</label>
       <input type="number" id="labourWage" formControlName="hourly_wage">
       
       <button type="button" (click)="editHourlyWage()">Save Wage Costs</button>

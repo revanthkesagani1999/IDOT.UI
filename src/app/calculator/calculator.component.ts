@@ -9,6 +9,7 @@ import { Equipment } from '../board-admin/board-admin.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CalculatorService } from '../calculator.service';
 import { UserService } from '../_services/user.service';
+import { NotificationService } from '../_services/notification.service';
 interface Model {
   category: string;
   modelYear: string;
@@ -27,7 +28,8 @@ export class CalculatorComponent {
     private route: ActivatedRoute,
     private calculatorService: CalculatorService,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private notificationService: NotificationService
   ) {}
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -81,6 +83,7 @@ export class CalculatorComponent {
   oilConsFactor: number = 0;
   maintFactor: number = 0;
   savedModels: Model[] = [];
+  dataLoaded = true;
 
   private roundTo = function (num: number, places: number) {
     const factor = 10 ** places;
@@ -158,7 +161,8 @@ export class CalculatorComponent {
   }
 
   saveModel(): void {
-    console.log(this.selectedItem);
+   // console.log(this.selectedItem);
+   this.dataLoaded = false
     const model = {
       category: this.selectedItem?.Category,
       subcategory: this.selectedItem?.Sub_Category,
@@ -173,7 +177,11 @@ export class CalculatorComponent {
 
     this.userService.saveModel(model).subscribe(
       (response) => {
-        console.log(response);
+        //console.log(response);
+        this.dataLoaded = true;
+        if (this.tabGroup) {
+          this.tabGroup.selectedIndex = 1;
+        }
       },
       (error) => {
         console.error(error);

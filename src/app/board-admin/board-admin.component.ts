@@ -19,7 +19,7 @@ export interface Equipment{
   Tire_Life_Hours: number;
   Hourly_Lube_Costs: number;
   Hourly_Wage: number;
-  Adjustment_for_fuel_cost: number;
+  "Adjustment for fuel cost": number;
   Horse_power: number;
   Economic_Life_in_months: number;
   Monthly_use_hours: number;
@@ -64,7 +64,7 @@ export class BoardAdminComponent implements OnInit {
   constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
-    this.userService.getAdminBoard().subscribe({
+    this.userService.getUserBoard().subscribe({
       next: data => {
         this.content = data;
         this.fetchModelYears();
