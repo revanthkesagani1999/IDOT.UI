@@ -37,6 +37,8 @@ export class EquipmentListComponent {
   sizesMap: { [category: string]: string[] } = {}; // Holds mapping of categories to sizes
   selectedSubCategory: string = ''; // Holds the selected Sub-category
   selectedSize: string = ''; // Holds the selected Size
+  showAddForm = false;
+
 
   constructor(private router: Router, private userService: UserService, private route: ActivatedRoute, private notificationService: NotificationService) {}
 
@@ -53,6 +55,8 @@ export class EquipmentListComponent {
    
  
   }
+
+
 
   loadEquipmentData(modelYear: string) {
     this.spinnerOn = true;
@@ -169,7 +173,7 @@ export class EquipmentListComponent {
             },
           });
         } else {
-    
+          
         }
       },
       (error: any) => {
@@ -185,28 +189,55 @@ export class EquipmentListComponent {
     this.showEditForm = true;
   }
 
+  showAddEquipmentForm() {
+    this.selectedEquipForEdit = this.userService.getDefaultEquipment();
+    this.showAddForm = true;
+    this.showEditForm = true;
+  }
+
   onSaveEquipment(updatedEquipment: any) {
     // Call the UserService to save the updated equipment
     if (this.modelYear) {
-      this.spinnerOn = true;
-      this.message = "Saving equipment...";
-      const year = this.modelYear;
-      this.userService.editEquipment(updatedEquipment,year).subscribe(
-        (response) => {
-          console.log('Equipment updated successfully:', response);
-          this.notificationService.triggerNotification('Equipment updated successfully', 'success');
+      if (!this.showAddForm) {
+        this.spinnerOn = true;
+        this.message = "Saving equipment...";
+        const year = this.modelYear;
+        this.userService.editEquipment(updatedEquipment,year).subscribe(
+          (response) => {
+            console.log('Equipment updated successfully:', response);
+            this.notificationService.triggerNotification('Equipment updated successfully', 'success');
+  
+            // Close the edit form
+            this.showEditForm = false;
+            // Fetch the updated equipment list
+            this.fetchEquipmentList();
+          },
+          (error) => {
+            this.spinnerOn = false;
+            this.notificationService.triggerNotification('Error updating equipment', 'error');
+            console.error('Error updating equipment:', error);
+          }
+        );
+      } else {
+        this.userService.addEquipment(updatedEquipment,this.modelYear).subscribe(
+          (response) => {
+            console.log('Equipment added successfully:', response);
+            this.notificationService.triggerNotification('Equipment added successfully', 'success');
+  
+            // Close the edit form
+            this.showEditForm = false;
+            this.showAddForm = false;
+            // Fetch the updated equipment list
+            this.fetchEquipmentList();
+          },
+          (error) => {
+            this.spinnerOn = false;
+            this.notificationService.triggerNotification('Error adding equipment', 'error');
+            console.error('Error adding equipment:', error);
+          }
+        );
+      }
 
-          // Close the edit form
-          this.showEditForm = false;
-          // Fetch the updated equipment list
-          this.fetchEquipmentList();
-        },
-        (error) => {
-          this.spinnerOn = false;
-          this.notificationService.triggerNotification('Error updating equipment', 'error');
-          console.error('Error updating equipment:', error);
-        }
-      );
     }
    
   }
@@ -231,6 +262,7 @@ export class EquipmentListComponent {
   
   onCancelEdit() {
     this.showEditForm = false;
+    this.showAddForm = false;
   }
   
 

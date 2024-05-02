@@ -64,11 +64,14 @@
             </div>
           </div>
         </div>
-        <div class="modal-overlay" *ngIf="showEditForm">
+        <div class="modal-overlay" *ngIf="showEditForm || showAddForm">
           <div class="modal-content">
-            <app-edit-form [equipment]="selectedEquipForEdit"
+            <app-edit-form [equipment]="selectedEquipForEdit" 
+            [showAddForm]="showAddForm"
             (saveClicked)="onSaveEquipment($event)"
-            (cancelClicked)="onCancelEdit()">
+            (cancelClicked)="onCancelEdit()"
+            [subCategoriesMap]="subCategoriesMap"
+            >
           </app-edit-form>
           </div>
         </div>
@@ -80,6 +83,9 @@
           <span>{{currentPage}} / {{totalPages}}</span>
           <button class="btn btn-outline-primary" [disabled]="currentPage === totalPages" (click)="nextPage()">Next</button>
         </div>
+      </div>
+      <div *ngIf="isManageEquipment" class="add-equipment-button-container">
+        <button class="btn btn-success" (click)="showAddEquipmentForm()">Add New Equipment</button>
       </div>
     </div>
   </div>

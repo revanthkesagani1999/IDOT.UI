@@ -49,14 +49,13 @@ export class EquipmentDetailsComponent {
             this.equipment.Original_price * this.equipment.Salvage_Value
           ) : 0
         );
-        //this.equipment.Usage_rate = Math.round(Number((this.equipment.Monthly_use_hours / 176)));
-
+        //this.equipment.Usage_rate = Number(Number((this.equipment.Monthly_use_hours / 176)).toFixed(3));
         this.equipment.Depreciation_Ownership_cost_Monthly = (this.equipment.Original_price * (1 + this.equipment.Sales_Tax) * (1 - this.equipment.Discount) * (1 - this.equipment.Salvage_Value) + (this.equipment.Initial_Freight_cost * this.equipment.Original_price)) / this.equipment.Economic_Life_in_months / this.equipment.Usage_rate;
-        
-        this.equipment.Cost_of_Facilities_Capital_Ownership_cost_Monthly = this.equipment.Cost_of_Capital_rate * this.equipment.Original_price / 12 / this.equipment.Usage_rate;
-        
+
+        this.equipment.Cost_of_Facilities_Capital_Ownership_cost_Monthly = ((this.equipment.Cost_of_Capital_rate * this.equipment.Original_price) / 12) / this.equipment.Usage_rate;
+
         this.equipment.Overhead_Ownership_cost_Monthly = this.equipment.Annual_Overhead_rate * this.equipment.Current_Market_Year_Resale_Value / 12 / this.equipment.Usage_rate;
-        
+
         this.equipment.Overhaul_Labor_Ownership_cost_Monthly = this.equipment.Hourly_Wage * this.equipment.Annual_Overhaul_Labor_Hours / 12 / this.equipment.Usage_rate;
         
         this.equipment.Overhaul_Parts_Ownership_cost_Monthly = this.equipment.Annual_Overhaul_Parts_cost_rate * this.equipment.Original_price / 12 / this.equipment.Usage_rate;
@@ -72,7 +71,7 @@ export class EquipmentDetailsComponent {
         this.equipment.Tire_Costs_Operating_cost_Hourly = (this.equipment.Tire_Life_Hours === 0) ? 0: this.equipment.Cost_of_A_New_Set_of_Tires / this.equipment.Tire_Life_Hours;
         this.equipment.Total_operating_cost = this.equipment.Field_Labor_Operating_cost_Hourly + this.equipment.Field_Parts_Operating_cost_Hourly + this.equipment.Ground_Engaging_Component_Cost_Operating_cost_Hourly + this.equipment.Lube_Operating_cost_Hourly + this.equipment.Fuel_by_horse_power_Operating_cost_Hourly + this.equipment.Tire_Costs_Operating_cost_Hourly;
         this.equipment.Total_cost_recovery = this.equipment.Total_ownership_cost_hourly + this.equipment.Total_operating_cost;
-        // console.log(this.equipment);
+         console.log(this.equipment);
       
       }
      }

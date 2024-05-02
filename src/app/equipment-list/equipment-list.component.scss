@@ -2,7 +2,10 @@
 .container {
   display: flex;
 }
-
+.add-equipment-button-container {
+  text-align: right;
+ padding: 20px;
+}
 .filter-wrapper {
   padding: 0;
   display: flex; /* Add this line to make the container flex */
@@ -158,3 +161,9 @@ img {
   border-color: #999;
   cursor: not-allowed;
 }
+
+
+.btn-success {
+  background-color: #007bff;
+}
+

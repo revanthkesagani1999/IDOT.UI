@@ -1,16 +1,40 @@
 <div *ngIf="equipment && !showGenerateForm" class="edit-form-container">
+  <h2 class="form-title">{{ showAddForm ? 'Add New Equipment' : 'Edit Equipment' }}</h2>
   <form>
+    <div *ngIf="showAddForm" class="toggle-container">
+      <input type="radio" id="chooseExisting" name="categoryMode" [(ngModel)]="categoryMode" value="existing" checked (change)="onCategoryModeChange()">
+      <label for="chooseExisting">Choose Existing Category </label>
+      
+      <input type="radio" id="addNew" name="categoryMode" [(ngModel)]="categoryMode" value="new" (change)="onCategoryModeChange()">
+      <label for="addNew">Add New Category</label>
+    </div>
     <div class="form-row">
+      <div  class="form-column">
+        <div class="form-group">
+          <label for="subCategory">Category</label>
+          <input *ngIf="!showAddForm || categoryMode === 'new'" [readonly]="!showAddForm" type="text" id="Category" [(ngModel)]="equipment.Category" name="Category"/>
+          <select *ngIf="showAddForm && categoryMode === 'existing'" id="category" class="category-dropdown" [(ngModel)]="equipment.Category" name="Category" (ngModelChange)="onCategoryChange()">
+            <option value="">Select Category</option>
+            <option *ngFor="let category of getCategories()" [ngValue]="category">{{ category }}</option>
+          </select>
+        </div>
+      </div>
       <div class="form-column">
         <div class="form-group">
           <label for="subCategory">Sub Category</label>
-          <input type="text" id="subCategory" [(ngModel)]="equipment.Sub_Category" name="subCategory" readonly/>
+          <input *ngIf="!showAddForm || categoryMode === 'new'" type="text" id="subCategory" [(ngModel)]="equipment.Sub_Category" name="subCategory" [readonly]="!showAddForm"/>
+          <select *ngIf="showAddForm && categoryMode === 'existing'" id="subCategory" class="sub-cat-dropdown" [(ngModel)]="equipment.Sub_Category" name="subCategory">
+            <option value="">Select Subcategory</option>
+            <option *ngFor="let subCategory of subCategoriesMap[equipment.Category]" [ngValue]="subCategory">{{ subCategory }}</option>
+          </select>
         </div>
       </div>
+      <div class="form-column">
       <div class="form-group">
         <label for="size">Size</label>
-        <input type="text" id="size" [(ngModel)]="equipment.Size" name="size" readonly/>
+        <input type="text" id="size" [(ngModel)]="equipment.Size" name="size" [readonly]="!showAddForm"/>
       </div>
+    </div>
     </div>
     <div class="form-row">
       <div class="form-column">
@@ -24,55 +48,52 @@
         </div>
       </div>
       <div class="form-column">
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="fuelUnitPrice">Fuel Unit Price</label>
           <input type="number" id="fuelUnitPrice" [(ngModel)]="equipment.Fuel_unit_price" name="fuelUnitPrice" />
-        </div>
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="form-column">
+        </div> -->
         <div class="form-group">
           <label for="originalPrice">Original Price</label>
           <input type="number" id="originalPrice" [(ngModel)]="equipment.Original_price" name="originalPrice" />
         </div>
       </div>
+    </div>
+
+    <div class="form-row">
       <div class="form-column">
         <div class="form-group">
           <label for="salesTax">Sales Tax</label>
           <input type="number" id="salesTax" [(ngModel)]="equipment.Sales_Tax" name="salesTax" />
         </div>
       </div>
-    </div>
-
-
-
-    <div class="form-row">
       <div class="form-column">
         <div class="form-group">
           <label for="discount">Discount</label>
           <input type="number" id="discount" [(ngModel)]="equipment.Discount" name="discount" />
         </div>
       </div>
+    </div>
+
+
+
+    <div class="form-row">
       <div class="form-column">
         <div class="form-group">
           <label for="salvageValue">Salvage Value</label>
           <input type="number" id="salvageValue" [(ngModel)]="equipment.Salvage_Value" name="salvageValue" />
         </div>
       </div>
-    </div>
-
-
-    <div class="form-row">
       <div class="form-column">
-        <!-- Annual Overhaul Labor Hours -->
         <div class="form-group">
           <label for="annualOverhaulLaborHours">Annual Overhaul Labor Hours</label>
           <input type="number" id="annualOverhaulLaborHours" [(ngModel)]="equipment.Annual_Overhaul_Labor_Hours"
             name="annualOverhaulLaborHours" />
         </div>
       </div>
+    </div>
+
+
+    <div class="form-row">
       <div class="form-column">
         <div class="form-group">
           <label for="annualFieldLaborHours">Annual Field Labor Hours</label>
@@ -80,19 +101,22 @@
             name="annualFieldLaborHours" />
         </div>
       </div>
+      <div class="form-column">
+        <div *ngIf="!showAddForm" class="form-column">
+          <div class="form-group">
+            <label for="currentMarketYearResaleValue">Current Market Year Resale Value</label>
+            <input type="number" id="currentMarketYearResaleValue"
+              [(ngModel)]="equipment.Current_Market_Year_Resale_Value" name="currentMarketYearResaleValue" />
+          </div>
+  
+        </div>
+      </div>
     </div>
 
 
 
     <div class="form-row">
-      <div class="form-column">
-        <div class="form-group">
-          <label for="currentMarketYearResaleValue">Current Market Year Resale Value</label>
-          <input type="number" id="currentMarketYearResaleValue"
-            [(ngModel)]="equipment.Current_Market_Year_Resale_Value" name="currentMarketYearResaleValue" />
-        </div>
 
-      </div>
       <div class="form-column">
         <div class="form-group">
           <label for="costOfANewSetOfTires">Cost of A New Set of Tires</label>
@@ -101,10 +125,6 @@
         </div>
 
       </div>
-    </div>
-
-
-    <div class="form-row">
       <div class="form-column">
         <div class="form-group">
           <label for="tireLifeHours">Tire Life Hours</label>
@@ -112,14 +132,17 @@
         </div>
 
       </div>
+    </div>
+
+
+    <div class="form-row">
+
       <div class="form-column">
         <div class="form-group">
           <label for="hourlyWage">Hourly Wage</label>
           <input type="number" id="hourlyWage" [(ngModel)]="equipment.Hourly_Wage" name="hourlyWage" />
         </div>
       </div>
-    </div>
-    <div class="form-row">
       <div class="form-column">
         <div class="form-group">
           <label for="hourlyLubeCosts">Hourly Lube Costs</label>
@@ -127,6 +150,9 @@
         </div>
 
       </div>
+    </div>
+    <div class="form-row">
+
       <div class="form-column">
         <div class="form-group">
           <label for="adjustmentForFuelCost">Adjustment for Fuel Cost</label>
@@ -135,15 +161,16 @@
         </div>
 
       </div>
-    </div>
-
-    <div class="form-row">
       <div class="form-column">
         <div class="form-group">
           <label for="horsePower">Horse Power</label>
           <input type="number" id="horsePower" [(ngModel)]="equipment.Horse_power" name="horsePower" />
         </div>
       </div>
+    </div>
+
+    <div class="form-row">
+
       <div class="form-column">
         <div class="form-group">
           <label for="economicLifeInMonths">Economic Life in Months</label>
@@ -161,12 +188,12 @@
           <input type="number" id="monthlyUseHours" [(ngModel)]="equipment.Monthly_use_hours" name="monthlyUseHours" />
         </div>
       </div>
-      <div class="form-column">
+      <!-- <div class="form-column">
         <div class="form-group">
           <label for="usageRate">Usage Rate</label>
           <input type="number" id="usageRate" [(ngModel)]="equipment.Usage_rate" name="usageRate" />
         </div>
-      </div>
+      </div> -->
     </div>
 
     <div class="form-row">
@@ -179,7 +206,7 @@
       </div>
       <div class="form-column">
         <div class="form-group">
-          <label for="annualOverheadRate">Annual Overhead Rate</label>
+          <label for="annualOverheadRate">Annual Overhead Rate( %  of Original price)</label>
           <input type="number" id="annualOverheadRate" [(ngModel)]="equipment.Annual_Overhead_rate"
             name="annualOverheadRate" />
         </div>
@@ -191,14 +218,14 @@
     <div class="form-row">
       <div class="form-column">
         <div class="form-group">
-          <label for="annualOverhaulPartsRate">Annual Overhaul Parts Cost Rate</label>
+          <label for="annualOverhaulPartsRate">Annual Overhaul Parts Cost Rate( %  of Original price)</label>
           <input type="number" id="annualOverhaulPartsRate" [(ngModel)]="equipment.Annual_Overhaul_Parts_cost_rate"
             name="annualOverhaulPartsRate" *ngIf="equipment" />
         </div>
       </div>
       <div class="form-column">
         <div class="form-group">
-          <label for="annualFieldRepairPartsRate">Annual Field Repair Parts Cost Rate</label>
+          <label for="annualFieldRepairPartsRate">Annual Field Repair Parts Cost Rate( %  of Original price)</label>
           <input type="number" id="annualFieldRepairPartsRate"
             [(ngModel)]="equipment.Annual_Field_Repair_Parts_and_misc_supply_parts_Cost_rate"
             name="annualFieldRepairPartsRate" *ngIf="equipment" />
@@ -212,7 +239,7 @@
     <div class="form-row">
       <div class="form-column">
         <div class="form-group">
-          <label for="annualGroundEngagingComponentRate">Annual Ground Engaging Component Rate</label>
+          <label for="annualGroundEngagingComponentRate">Annual Ground Engaging Component Rate( %  of Original price)</label>
           <input type="number" id="annualGroundEngagingComponentRate"
             [(ngModel)]="equipment.Annual_Ground_Engaging_Component_rate" name="annualGroundEngagingComponentRate"
             *ngIf="equipment" />
@@ -220,7 +247,7 @@
       </div>
       <div class="form-column">
         <div class="form-group">
-          <label for="costOfCapitalRate">Cost of Capital Rate</label>
+          <label for="costOfCapitalRate">Cost of Capital Rate( %  of Original price)</label>
           <input type="number" id="costOfCapitalRate" [(ngModel)]="equipment.Cost_of_Capital_rate"
             name="costOfCapitalRate" *ngIf="equipment" />
         </div>
@@ -229,7 +256,7 @@
 
 
     <div class="form-buttons">
-      <button type="button" (click)="onSave()">Save</button>
+      <button type="button" (click)="onSave()">{{ showAddForm ? 'Add Equipment' : 'Save' }}</button>
       <button type="button" (click)="onCancel()">Cancel</button>
     </div>
   </form>
