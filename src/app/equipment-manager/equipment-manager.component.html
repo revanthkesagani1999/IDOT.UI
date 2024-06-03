@@ -18,6 +18,14 @@
         <a href="javascript:void(0);" (click)="loadEquipmentData('wage')">Edit Hourly Wage</a>
       </li>
     </ul>
+    <div *ngIf="contractors.length > 0">
+      <h2>Contractors</h2>
+      <ul class="year-list">
+        <li *ngFor="let contractor of contractors">
+          <a href="javascript:void(0);" (click)="loadContractorData(contractor)">{{ parseContractorName(contractor) }}</a>
+        </li>
+      </ul>
+    </div>
   </div>
 
   <!-- <app-confirmation-dialog

@@ -43,8 +43,16 @@ export class UserService {
     return this.http.get(API_URL + 'years');
   }
 
+  getAllContractors(): Observable<any> {
+    return this.http.get(API_URL + 'contractors');
+  }
+
   getModelDataByYear(year: string): Observable<any> {
     return this.http.get(API_URL + `model-data/${year}`);
+  }
+
+  getModelDataByContractor(contractor: string): Observable<any> {
+    return this.http.get(API_URL + `contractor-data/${contractor}`);
   }
 
   editEquipment(equipment: any, year: string): Observable<any> {

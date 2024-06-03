@@ -13,6 +13,7 @@ import { NotificationService } from '../_services/notification.service';
 })
 export class EquipmentManagerComponent implements OnInit {
   equipmentYears: string[] = [];
+  contractors: string[] = [];
   selectedYear: string = '';
   currentEquipmentData: Equipment[] = [];
   dataLoaded = false;
@@ -39,6 +40,7 @@ export class EquipmentManagerComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchAllModelYears();
+    this.fetchAllContractors();
   }
 
   fetchAllModelYears() {
@@ -54,7 +56,24 @@ export class EquipmentManagerComponent implements OnInit {
     );
   }
 
-  loadEquipmentData(year: string) {
+  parseContractorName(name: string) {
+    return name.split("-").join(" ");
+  }
+
+  fetchAllContractors() {
+    this.userService.getAllContractors().subscribe(
+      (response) => {
+        this.dataLoaded = true;
+        this.contractors = response.contractors;
+      },
+      (error) => {
+        this.dataLoaded = true
+        console.error(error);
+      }
+    );
+  }
+
+  loadEquipmentData(year: String) {
     if (year === 'new') {
       this.showGenerateForm = true;
     } else if (year === 'fuel') {
@@ -76,6 +95,10 @@ export class EquipmentManagerComponent implements OnInit {
       this.router.navigate(['/equipment-list'], { queryParams: { modelYear: year, isManageEquipment: true } });
  
     }
+  }
+
+  loadContractorData(contractor: string) {
+    this.router.navigate(['/equipment-list'], { queryParams: { contractor: contractor, isManageEquipment: true } });
   }
 
   loadFuelCosts() {

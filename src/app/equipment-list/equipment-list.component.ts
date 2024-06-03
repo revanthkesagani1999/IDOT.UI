@@ -13,6 +13,7 @@ import { NotificationService } from '../_services/notification.service';
 export class EquipmentListComponent {
   @Input() equipmentList: Equipment[] = []; 
   @Input() modelYear?: string = '';
+  @Input() contractor?: string = '';
   @Input() isManageEquipment?:boolean = false;
   filteredEquipmentList: Equipment[] = []; 
   selectedEquipForEdit?: Equipment;
@@ -46,10 +47,13 @@ export class EquipmentListComponent {
     this.route.queryParams.subscribe(params => {
       // Assuming modelYear is passed as a query parameter
       this.modelYear = params['modelYear'];
+      this.contractor = params['contractor'];
       this.isManageEquipment = params['isManageEquipment'];
   
       if (this.modelYear) {
         this.loadEquipmentData(this.modelYear);
+      } else if(this.contractor) {
+        this.loadContractorData(this.contractor);
       }
     });
    
@@ -61,6 +65,22 @@ export class EquipmentListComponent {
   loadEquipmentData(modelYear: string) {
     this.spinnerOn = true;
     this.userService.getModelDataByYear(modelYear).subscribe(data => {
+      this.spinnerOn = false;
+      this.equipmentList = data.data;
+      this.filteredEquipmentList = this.equipmentList;
+
+      this.subCategories = Array.from(
+        new Set(this.equipmentList.map(equipment => equipment.Sub_Category))
+      );
+    
+      // Initialize subCategoriesMap
+      this.subCategoriesMap = this.createSubCategoriesMap(this.equipmentList);
+    });
+  }
+
+  loadContractorData(contractor: string) {
+    this.spinnerOn = true;
+    this.userService.getModelDataByContractor(contractor).subscribe(data => {
       this.spinnerOn = false;
       this.equipmentList = data.data;
       this.filteredEquipmentList = this.equipmentList;
