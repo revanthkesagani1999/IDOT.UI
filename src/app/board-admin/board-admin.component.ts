@@ -58,6 +58,7 @@ export class BoardAdminComponent implements OnInit {
   equipments: { [year: string]: Equipment[] } = {};
   currentEquipmentData:Equipment[] = [];
   equipmentDataKeys: string[] = [];
+  contractors: string[] = [];
   dataLoaded = false;
   modelDataSelected = false;
   modelYear?: string = "";
@@ -68,6 +69,7 @@ export class BoardAdminComponent implements OnInit {
       next: data => {
         this.content = data;
         this.fetchModelYears();
+        this.fetchAllContractors();
       },
       error: err => {
         if (err.error) {
@@ -96,6 +98,19 @@ export class BoardAdminComponent implements OnInit {
     );
   }
 
+  fetchAllContractors() {
+    this.userService.getAllContractors().subscribe(
+      (response) => {
+        this.dataLoaded = true;
+        this.contractors = response.contractors;
+      },
+      (error) => {
+        this.dataLoaded = true
+        console.error(error);
+      }
+    );
+  }
+
   loadEquipmentData(year: string) {
     // this.dataLoaded = false;
     // // Fetch model data for the selected year
@@ -114,5 +129,12 @@ export class BoardAdminComponent implements OnInit {
 
     this.router.navigate(['/equipment-list'], { queryParams: { modelYear: year } });
  
+  }
+
+  parseContractorName(name: string) {
+    return name.split("-").join(" ");
+  }
+  loadContractorData(contractor: string) {
+    this.router.navigate(['/equipment-list'], { queryParams: { contractor: contractor} });
   }
 }
