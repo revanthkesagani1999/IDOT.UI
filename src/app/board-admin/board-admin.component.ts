@@ -19,6 +19,7 @@ export interface Equipment{
   Tire_Life_Hours: number;
   Hourly_Lube_Costs: number;
   Hourly_Wage: number;
+  "Model Year": number;
   "Adjustment for fuel cost": number;
   Horse_power: number;
   Economic_Life_in_months: number;

@@ -55,10 +55,11 @@ export class UserService {
     return this.http.get(API_URL + `contractor-data/${contractor}`);
   }
 
-  editEquipment(equipment: any, year: string): Observable<any> {
+  editEquipment(equipment: any, year: string, contractor: string | null = null): Observable<any> {
     const body = {
       equipment,
-      year
+      year,
+      contractor
     };
     return this.http.put(API_URL + 'editEquipment', body);
   }
@@ -105,6 +106,7 @@ export class UserService {
       Tire_Life_Hours: 0,
       Hourly_Lube_Costs: 0,
       Hourly_Wage: 0,
+      "Model Year": 0,
       "Adjustment for fuel cost": 1,
       Horse_power: 0,
       Economic_Life_in_months: 0,
@@ -134,10 +136,11 @@ export class UserService {
     return DEFAULT_EQUIPMENT;
   }
 
-  addEquipment(equipment: Equipment, modelYear: string): Observable<any> {
+  addEquipment(equipment: Equipment, modelYear: string, contractor: string | null = null): Observable<any> {
     const body = {
       equipment,
-      modelYear
+      modelYear,
+      contractor
     };
     return this.http.post(API_URL + 'addequipment', body);
   }

@@ -12,6 +12,7 @@ export class EquipmentDetailsComponent {
   @Input() equipment?: Equipment;
   ModelYear?: number;
   isAdmin = false;
+  isContractor: boolean = false
   currYear: number = 0
   totalAnnualRepairAndComponentRate: number = 0;
   constructor(private storageService: StorageService,private route: ActivatedRoute, private router: Router, private calculatorService: CalculatorService) { }
@@ -19,7 +20,8 @@ export class EquipmentDetailsComponent {
   ngOnInit(): void {
     this.equipment = history.state.equipment;
     const user = this.storageService.getUser();
-    this.ModelYear = history.state.modelYear;
+    this.isContractor = history.state.isContractor;
+    this.ModelYear = this.isContractor && this.equipment ? this.equipment['Model Year'] : history.state.modelYear;
     this.currYear = history.state.currYear;
     this.isAdmin = user.roles.includes('ROLE_ADMIN');
     if (!this.equipment) {
@@ -71,11 +73,9 @@ export class EquipmentDetailsComponent {
         this.equipment.Tire_Costs_Operating_cost_Hourly = (this.equipment.Tire_Life_Hours === 0) ? 0: this.equipment.Cost_of_A_New_Set_of_Tires / this.equipment.Tire_Life_Hours;
         this.equipment.Total_operating_cost = this.equipment.Field_Labor_Operating_cost_Hourly + this.equipment.Field_Parts_Operating_cost_Hourly + this.equipment.Ground_Engaging_Component_Cost_Operating_cost_Hourly + this.equipment.Lube_Operating_cost_Hourly + this.equipment.Fuel_by_horse_power_Operating_cost_Hourly + this.equipment.Tire_Costs_Operating_cost_Hourly;
         this.equipment.Total_cost_recovery = this.equipment.Total_ownership_cost_hourly + this.equipment.Total_operating_cost;
-         console.log(this.equipment);
-      
+        console.log(this.equipment);
       }
      }
-    
 }
 
   onCalculateCostsClicked(btnType?: String) {

@@ -13,8 +13,9 @@ import { NotificationService } from '../_services/notification.service';
 export class EquipmentListComponent {
   @Input() equipmentList: Equipment[] = []; 
   @Input() modelYear?: string = '';
-  @Input() contractor?: string = '';
+  @Input() contractor?: string = undefined;
   @Input() isManageEquipment?:boolean = false;
+  @Input() isContractor?:boolean = false;
   filteredEquipmentList: Equipment[] = []; 
   selectedEquipForEdit?: Equipment;
   originalEquipment?: Equipment;
@@ -62,37 +63,6 @@ export class EquipmentListComponent {
 
 
 
-  loadEquipmentData(modelYear: string) {
-    this.spinnerOn = true;
-    this.userService.getModelDataByYear(modelYear).subscribe(data => {
-      this.spinnerOn = false;
-      this.equipmentList = data.data;
-      this.filteredEquipmentList = this.equipmentList;
-
-      this.subCategories = Array.from(
-        new Set(this.equipmentList.map(equipment => equipment.Sub_Category))
-      );
-    
-      // Initialize subCategoriesMap
-      this.subCategoriesMap = this.createSubCategoriesMap(this.equipmentList);
-    });
-  }
-
-  loadContractorData(contractor: string) {
-    this.spinnerOn = true;
-    this.userService.getModelDataByContractor(contractor).subscribe(data => {
-      this.spinnerOn = false;
-      this.equipmentList = data.data;
-      this.filteredEquipmentList = this.equipmentList;
-
-      this.subCategories = Array.from(
-        new Set(this.equipmentList.map(equipment => equipment.Sub_Category))
-      );
-    
-      // Initialize subCategoriesMap
-      this.subCategoriesMap = this.createSubCategoriesMap(this.equipmentList);
-    });
-  }
 
   private createSubCategoriesMap(equipmentList: Equipment[]): { [category: string]: string[] } {
     const map: { [category: string]: string[] } = {};
@@ -189,7 +159,8 @@ export class EquipmentListComponent {
             state: {
               modelYear: this.modelYear,
               equipment: equipment,
-              currYear: currentWorkingYear
+              currYear: currentWorkingYear,
+              contractor: this.contractor
             },
           });
         } else {
@@ -217,12 +188,14 @@ export class EquipmentListComponent {
 
   onSaveEquipment(updatedEquipment: any) {
     // Call the UserService to save the updated equipment
-    if (this.modelYear) {
+    const modelYear = this.contractor && updatedEquipment ? updatedEquipment['Model Year']: this.modelYear;
+
+    if (modelYear || this.contractor) {
       if (!this.showAddForm) {
         this.spinnerOn = true;
         this.message = "Saving equipment...";
-        const year = this.modelYear;
-        this.userService.editEquipment(updatedEquipment,year).subscribe(
+        const year = this.isContractor && updatedEquipment ? updatedEquipment['Model Year']: this.modelYear;
+        this.userService.editEquipment(updatedEquipment,year, this.contractor).subscribe(
           (response) => {
             console.log('Equipment updated successfully:', response);
             this.notificationService.triggerNotification('Equipment updated successfully', 'success');
@@ -239,7 +212,7 @@ export class EquipmentListComponent {
           }
         );
       } else {
-        this.userService.addEquipment(updatedEquipment,this.modelYear).subscribe(
+        this.userService.addEquipment(updatedEquipment, modelYear, this.contractor).subscribe(
           (response) => {
             console.log('Equipment added successfully:', response);
             this.notificationService.triggerNotification('Equipment added successfully', 'success');
@@ -276,8 +249,53 @@ export class EquipmentListComponent {
           console.error('Error loading equipment:',error);
         }
       );
+    } else if (this.contractor) {
+      this.message = "Reloading contractor data...";
+      this.userService.getModelDataByContractor(this.contractor).subscribe(
+        (response) => {
+        this.spinnerOn = false;
+        this.filteredEquipmentList = response.data;
+      },
+      (error) => {
+        this.spinnerOn = false;
+          this.notificationService.triggerNotification('Error loading contractors', 'error');
+          console.error('Error loading contractor data:',error);
+      }
+      );
     }
+  }
+
+
+  loadEquipmentData(modelYear: string) {
+    this.spinnerOn = true;
+    this.userService.getModelDataByYear(modelYear).subscribe(data => {
+      this.spinnerOn = false;
+      this.equipmentList = data.data;
+      this.filteredEquipmentList = this.equipmentList;
+
+      this.subCategories = Array.from(
+        new Set(this.equipmentList.map(equipment => equipment.Sub_Category))
+      );
     
+      // Initialize subCategoriesMap
+      this.subCategoriesMap = this.createSubCategoriesMap(this.equipmentList);
+    });
+  }
+
+  loadContractorData(contractor: string) {
+    this.spinnerOn = true;
+    this.userService.getModelDataByContractor(contractor).subscribe(data => {
+      this.spinnerOn = false;
+      this.equipmentList = data.data;
+      this.filteredEquipmentList = this.equipmentList;
+
+      this.subCategories = Array.from(
+        new Set(this.equipmentList.map(equipment => equipment.Sub_Category))
+      );
+    
+      // Initialize subCategoriesMap
+      this.subCategoriesMap = this.createSubCategoriesMap(this.equipmentList);
+    });
   }
   
   onCancelEdit() {
