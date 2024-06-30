@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Equipment } from '../board-admin/board-admin.component';
+import { StorageService } from './storage.service';
 
 //const API_URL = 'http://localhost:8082/api/test/';
 const API_URL = 'https://idot-backend.vercel.app/api/test/';
@@ -9,50 +10,58 @@ const API_URL = 'https://idot-backend.vercel.app/api/test/';
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private storageService: StorageService) {}
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = this.storageService.getToken();
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token  // Add the token to the request headers
+    });
+  }
 
   getPublicContent(): Observable<any> {
     return this.http.get(API_URL + 'all', { responseType: 'text' });
   }
 
   getUserBoard(): Observable<any> {
-    return this.http.get(API_URL + 'user', { responseType: 'text' });
+    return this.http.get(API_URL + 'user', { headers: this.getAuthHeaders(), responseType: 'text' });
   }
-  
+
   getModeratorBoard(): Observable<any> {
-    return this.http.get(API_URL + 'mod', { responseType: 'text' });
+    return this.http.get(API_URL + 'mod', { headers: this.getAuthHeaders(), responseType: 'text' });
   }
 
   getAdminBoard(): Observable<any> {
-    return this.http.get(API_URL + 'admin', { responseType: 'text' });
+    return this.http.get(API_URL + 'admin', { headers: this.getAuthHeaders(), responseType: 'text' });
   }
 
   saveModel(model: any): Observable<any> {
-    return this.http.post(API_URL + 'savemodel', model);
+    return this.http.post(API_URL + 'savemodel', model, { headers: this.getAuthHeaders() });
   }
 
   getSavedModels(): Observable<any> {
-    return this.http.get(API_URL + 'savedmodels');
+    return this.http.get(API_URL + 'savedmodels', { headers: this.getAuthHeaders() });
   }
 
   getAllModelData(): Observable<any> {
-    return this.http.get(API_URL + 'allmodeldata');
+    return this.http.get(API_URL + 'allmodeldata', { headers: this.getAuthHeaders() });
   }
 
   getAllModelYears(): Observable<any> {
-    return this.http.get(API_URL + 'years');
+    return this.http.get(API_URL + 'years', { headers: this.getAuthHeaders() });
   }
 
   getAllContractors(): Observable<any> {
-    return this.http.get(API_URL + 'contractors');
+    return this.http.get(API_URL + 'contractors', { headers: this.getAuthHeaders() });
   }
 
   getModelDataByYear(year: string): Observable<any> {
-    return this.http.get(API_URL + `model-data/${year}`);
+    return this.http.get(API_URL + `model-data/${year}`, { headers: this.getAuthHeaders() });
   }
 
   getModelDataByContractor(contractor: string): Observable<any> {
-    return this.http.get(API_URL + `contractor-data/${contractor}`);
+    return this.http.get(API_URL + `contractor-data/${contractor}`, { headers: this.getAuthHeaders() });
   }
 
   editEquipment(equipment: any, year: string, contractor: string | null = null): Observable<any> {
@@ -61,31 +70,31 @@ export class UserService {
       year,
       contractor
     };
-    return this.http.put(API_URL + 'editEquipment', body);
+    return this.http.put(API_URL + 'editEquipment', body, { headers: this.getAuthHeaders() });
   }
 
   generateNextYearEquipData(priceIncreaseRate: number, dataUpdate: boolean): Observable<any> {
-    return this.http.post(API_URL + 'generate-data', {priceIncreaseRate,dataUpdate});
+    return this.http.post(API_URL + 'generate-data', { priceIncreaseRate, dataUpdate }, { headers: this.getAuthHeaders() });
   }
 
   getFuelCosts(): Observable<any> {
-    return this.http.get(API_URL + 'fuelcosts');
+    return this.http.get(API_URL + 'fuelcosts', { headers: this.getAuthHeaders() });
   }
 
   editFuelCosts(fuelCosts: any): Observable<any> {
-    return this.http.put(API_URL + 'editfuelcosts', fuelCosts);
+    return this.http.put(API_URL + 'editfuelcosts', fuelCosts, { headers: this.getAuthHeaders() });
   }
 
   getHourlyWage(): Observable<any> {
-    return this.http.get(API_URL + 'hrlabourwage');
+    return this.http.get(API_URL + 'hrlabourwage', { headers: this.getAuthHeaders() });
   }
 
   editHourlyWage(labourWage: any): Observable<any> {
-    return this.http.put(API_URL + 'edithrlabourwage', labourWage);
+    return this.http.put(API_URL + 'edithrlabourwage', labourWage, { headers: this.getAuthHeaders() });
   }
 
   getCurrentYear(): Observable<any> {
-    return this.http.get(API_URL + 'currentyear');
+    return this.http.get(API_URL + 'currentyear', { headers: this.getAuthHeaders() });
   }
 
   getDefaultEquipment() {
@@ -136,12 +145,12 @@ export class UserService {
     return DEFAULT_EQUIPMENT;
   }
 
-  addEquipment(equipment: Equipment, modelYear: string, contractor: string | null = null): Observable<any> {
+  addEquipment(equipment: any, modelYear: string, contractor: string | null = null): Observable<any> {
     const body = {
       equipment,
       modelYear,
       contractor
     };
-    return this.http.post(API_URL + 'addequipment', body);
+    return this.http.post(API_URL + 'addequipment', body, { headers: this.getAuthHeaders() });
   }
 }
