@@ -34,6 +34,7 @@ export class StorageService {
 
   public clean(): void {
     window.sessionStorage.removeItem(USER_KEY);
+    window.sessionStorage.removeItem('auth-token');
     window.sessionStorage.clear();
   }
 }
