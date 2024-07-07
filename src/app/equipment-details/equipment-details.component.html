@@ -10,7 +10,7 @@
     <tr>
       <td>Size:</td>
       <td><input type="text" [(ngModel)]="equipment.Size" readonly></td>
-      <td>Fuel type:</td>
+      <td>Fuel Type:</td>
       <td>
         <select id="reimbursableFuelType" [(ngModel)]="equipment['Reimbursable Fuel_type (1 diesel, 2 gas, 3 other)']" name="reimbursableFuelType">
           <option value="1">Diesel</option>
@@ -40,7 +40,7 @@
     <tr>
       <td>Annual Field Labor Hours:</td>
       <td><input type="number" [(ngModel)]="equipment.Annual_Field_Labor_Hours"></td>
-      <td>Cost of a New Set of Tires:</td>
+      <td>Cost Of New Set Of Tires:</td>
       <td><input type="number" [(ngModel)]="equipment.Cost_of_A_New_Set_of_Tires"></td>
     </tr>
     <tr>
@@ -58,33 +58,33 @@
     <tr>
       <td>Economic Life in months:</td>
       <td><input type="number" [(ngModel)]="equipment.Economic_Life_in_months"></td>
-      <td>Monthly use hours:</td>
+      <td>Standard Monthly Use Hours:</td>
       <td><input type="number" [(ngModel)]="equipment.Monthly_use_hours"></td>
     </tr>
     <tr>
       <td>Initial Freight Costs:</td>
       <td><input type="number" [(ngModel)]="equipment.Initial_Freight_cost"></td>
-      <td>Annual Overhead Rate based on resale value:</td>
+      <td>Annual Overhead Rate Based On Resale Value:</td>
       <td><input type="number" [(ngModel)]="equipment.Annual_Overhead_rate"></td>
     </tr>
     <tr>
-      <td>Annual Overhaul Parts Cost Rate of Original price:</td>
+      <td>Annual Overhaul Parts Cost Rate Of Original Price:</td>
       <td><input type="number" [(ngModel)]="equipment.Annual_Overhaul_Parts_cost_rate"></td>
       <td>Annual Field Repair Parts :</td>
       <td><input type="number" [(ngModel)]="totalAnnualRepairAndComponentRate"></td>
     </tr>
     <tr>
-       <td>Capital Cost Rate of Original Price:</td>
+       <td>Capital Cost Rate Of Original Price:</td>
       <td><input type="number" [(ngModel)]="equipment.Cost_of_Capital_rate"></td>
     </tr>
   </table>
 
   <div class="center">
     <div class="button-container">
-      <button (click)="onCalculateCostsClicked('calculate')">Calculate costs</button>
+      <button (click)="onCalculateCostsClicked('calculate')">Calculate Costs</button>
     </div>
     <div class="button-container">
-      <button (click)="onCalculateCostsClicked('view')">Calculate internal costs</button>
+      <button (click)="onCalculateCostsClicked('view')">Calculate Internal Costs</button>
     </div>
   </div>
 
@@ -141,7 +141,7 @@
         <td>{{ equipment.Lube_Operating_cost_Hourly | number: '1.2-2' }}</td>
       </tr>
       <tr>
-        <td>Fuel by Horse Power Operating Cost (Hourly):</td>
+        <td>Fuel By Horse Power Operating Cost (Hourly):</td>
         <td>{{ equipment.Fuel_by_horse_power_Operating_cost_Hourly | number: '1.2-2' }}</td>
       </tr>
       <tr>
