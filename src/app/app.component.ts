@@ -48,12 +48,27 @@ export class AppComponent {
     this.router.navigate([link]);
   }
 
+  // logout(): void {
+  //   this.authService.logout().subscribe({
+  //     next: res => {
+  //       console.log(res);
+  //       this.storageService.clean();
+  //       window.location.reload();
+  //       this.router.navigate(['/login']);
+  //     },
+  //     error: err => {
+  //       console.log(err);
+  //     }
+  //   });
+  // }
   logout(): void {
     this.authService.logout().subscribe({
       next: res => {
         console.log(res);
-        this.storageService.clean();
-        this.router.navigate(['/login']);
+        this.storageService.clean();  // Clear local storage or session storage
+        this.router.navigate(['/login']).then(() => {
+          window.location.reload();  // Ensure reload happens after navigation
+        });
       },
       error: err => {
         console.log(err);

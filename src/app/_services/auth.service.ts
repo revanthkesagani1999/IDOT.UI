@@ -38,7 +38,7 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    return this.http.post(AUTH_API + 'signout', { }, httpOptions);
+    return this.http.post(AUTH_API + 'signout', httpOptions);
   }
   forgotPassword(email: string): Observable<any> {
     return this.http.post(AUTH_API + 'forgot-password', { email });
