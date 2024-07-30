@@ -17,12 +17,18 @@
       <li >
         <a href="javascript:void(0);" (click)="loadEquipmentData('wage')">Edit Hourly Wage</a>
       </li>
+      <li >
+        <a href="javascript:void(0);" (click)="exportDataForm('equipments')">Export Equipment Data</a>
+      </li>
     </ul>
     <div *ngIf="contractors.length > 0">
       <h2>Contractors</h2>
       <ul class="year-list">
         <li *ngFor="let contractor of contractors">
           <a href="javascript:void(0);" (click)="loadContractorData(contractor)">{{ parseContractorName(contractor) }}</a>
+        </li>
+        <li >
+          <a href="javascript:void(0);" (click)="exportDataForm('contractors')">Export Contractor Data</a>
         </li>
       </ul>
     </div>
@@ -76,3 +82,16 @@
             (cancelClicked)="onCancelEdit()">
     </app-edit-form>
   </div>
+
+  <div *ngIf="exportFormData.length>0">
+    <div class="modal-overlay">
+      <div class="modal-content">
+        <app-edit-form [exportFormData]="exportFormData" 
+          (exportClicked)="exportData($event)" 
+          [exportDataType]="exportDataType"
+          (cancelClicked)="onCancelEdit()">
+        </app-edit-form>
+      </div>
+    </div>
+  </div>
+

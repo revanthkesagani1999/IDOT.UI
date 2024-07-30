@@ -277,3 +277,18 @@
   
   </form>
 </div>
+
+<div *ngIf="exportFormData.length > 0" class="selection-form">
+  <h2>Select {{ exportDataType }} To Export</h2>
+  <ul>
+    <li *ngFor="let item of exportFormData; let i = index">
+      <input type="checkbox" [checked]="selectedItems.includes(item)"
+      (change)="updateSelectedItems(item, $event)">
+      {{ item }}
+    </li>
+  </ul>
+  <div class="form-buttons">
+    <button type="button" (click)="onSave()">Export</button>
+    <button type="button" (click)="onCancel()">Cancel</button>
+  </div>
+</div>

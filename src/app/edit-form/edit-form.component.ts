@@ -11,15 +11,26 @@ export class EditFormComponent {
   @Input() equipment?: Equipment ; // Input equipment to be edited
   @Input() showGenerateForm?: boolean = false;
   @Input() showAddForm = false;
+  @Input() exportFormData:string[] = [];
+  @Input() exportDataType: string = '';
   @Input() subCategoriesMap: { [category: string]: string[] } = {};
   @Output() saveClicked = new EventEmitter<any>();
+  @Output() exportClicked = new EventEmitter<any>();
   @Output() cancelClicked = new EventEmitter<void>();
+  selectedItems: string[] = [];
   nextYearPriceIncreaseRate: number = 1;
   categoryMode: string = 'existing';
+
   onSave() {
     if(this.showGenerateForm) {
       this.saveClicked.emit(this.nextYearPriceIncreaseRate);
-    }else {
+    }else if (this.exportDataType.length>0){
+      if (this.selectedItems.length === 0) {
+        alert('Please select at least one item to export.'); // Replace alert with a more user-friendly notification
+        return;
+      }
+      this.exportClicked.emit(this.selectedItems);
+    } else {
       console.log(this.equipment);
       this.saveClicked.emit(this.equipment);
     }
@@ -54,4 +65,16 @@ export class EditFormComponent {
   onCancel() {
     this.cancelClicked.emit();
   }
+
+  updateSelectedItems(item: string, $event:Event): void {
+    const isChecked = ($event.target as HTMLInputElement).checked
+    if (isChecked) {
+      if (!this.selectedItems.includes(item)) {
+        this.selectedItems.push(item);
+      }
+    } else {
+      this.selectedItems = this.selectedItems.filter(i => i !== item);
+    }
+  }
+
 }

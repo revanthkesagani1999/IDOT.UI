@@ -153,4 +153,8 @@ export class UserService {
     };
     return this.http.post(API_URL + 'addequipment', body, { headers: this.getAuthHeaders() });
   }
+
+  exportData(selections: string[], dataType: string) {
+    return this.http.post(API_URL + 'exportdata', { selections, dataType }, { headers: this.getAuthHeaders(), responseType: 'blob' });
+  }
 }

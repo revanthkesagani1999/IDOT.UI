@@ -13,6 +13,8 @@ import { NotificationService } from '../_services/notification.service';
 })
 export class EquipmentManagerComponent implements OnInit {
   equipmentYears: string[] = [];
+  exportFormData: string[] = [];
+  exportDataType: string = '';
   contractors: string[] = [];
   selectedYear: string = '';
   currentEquipmentData: Equipment[] = [];
@@ -232,9 +234,41 @@ export class EquipmentManagerComponent implements OnInit {
     this.showGenerateForm = false;
   }
   
+  exportDataForm(type: string) {
+    this.exportDataType = type;
+    this.exportFormData = type === 'equipments' ? this.equipmentYears : type === 'contractors' ? this.contractors : [];
+  }
+
+  exportData(data:string[]) {
+    this.userService.exportData(data, this.exportDataType).subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob); // Create a URL from the blob
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = "EquipmentData.xlsx"; // Set the file name for download
+        document.body.appendChild(a); // Append the link to the body
+        a.click(); // Simulate click to trigger download
+        window.URL.revokeObjectURL(url); // Clean up the URL object
+        a.remove(); // Remove the link from DOM
+        this.clearExportData();
+      },
+      error: (error) => {
+        console.error('Failed to export data:', error);
+      }
+    });
+  }
 
   onCancelEdit() {
+    if (this.exportDataType.length>0) {
+      this.clearExportData();
+    } else {
     this.showGenerateForm = false;
+    }
+  }
+
+  clearExportData() {
+    this.exportDataType = '';
+    this.exportFormData = [];
   }
 }
   
