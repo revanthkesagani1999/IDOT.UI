@@ -64,14 +64,14 @@ export class AppComponent {
   logout(): void {
     this.authService.logout().subscribe({
       next: res => {
-        console.log(res);
-        this.storageService.clean();  // Clear local storage or session storage
+        console.log("Logout response:", res);
+        this.storageService.clean(); // Clear all storage and session info
         this.router.navigate(['/login']).then(() => {
-          window.location.reload();  // Ensure reload happens after navigation
+          window.location.reload(); // Force reload to clear any cached data
         });
       },
       error: err => {
-        console.log(err);
+        console.error("Logout error:", err);
       }
     });
   }
