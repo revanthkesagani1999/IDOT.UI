@@ -65,6 +65,7 @@ export class AppComponent {
     this.authService.logout().subscribe({
       next: res => {
         console.log("Logout response:", res);
+        alert(res)
         this.storageService.clean(); // Clear all storage and session info
         this.router.navigate(['/login']).then(() => {
           window.location.reload(); // Force reload to clear any cached data
