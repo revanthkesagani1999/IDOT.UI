@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, finalize } from 'rxjs';
 import { StorageService } from './_services/storage.service';
 import { AuthService } from './_services/auth.service';
 import { EventBusService } from './_shared/event-bus.service';
@@ -62,7 +62,9 @@ export class AppComponent {
   //   });
   // }
   logout(): void {
-    this.authService.logout().subscribe({
+    this.authService.logout().pipe(
+      finalize(() => console.log('Logout request completed'))
+    ).subscribe({
       next: data => {
         this.storageService.clean(); // Clear all storage and session info
         console.log("loggedout");
