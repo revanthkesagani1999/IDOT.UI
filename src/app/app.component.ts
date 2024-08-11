@@ -75,6 +75,9 @@ export class AppComponent {
       },
       error: err => {
         console.error("Logout error:", err);
+      },
+      complete: () => {
+        console.log("Subscription completed"); // Check if this gets logged
       }
     });
   }
