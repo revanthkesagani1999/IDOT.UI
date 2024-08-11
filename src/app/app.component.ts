@@ -80,5 +80,6 @@ export class AppComponent {
         console.log("Subscription completed"); // Check if this gets logged
       }
     });
+    this.storageService.clean();
   }
 }
