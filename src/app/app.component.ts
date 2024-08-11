@@ -28,7 +28,7 @@ export class AppComponent {
 
   ngOnInit(): void {
     this.isLoggedIn = this.storageService.isLoggedIn();
-
+    console.log('isloggedin',this.isLoggedIn);
     if (this.isLoggedIn) {
       const user = this.storageService.getUser();
       this.roles = user.roles;
@@ -63,7 +63,7 @@ export class AppComponent {
   // }
   logout(): void {
     this.authService.logout().subscribe({
-      next: res => {
+      next: data => {
         this.storageService.clean(); // Clear all storage and session info
         this.router.navigate(['/login']).then(() => {
           window.location.reload(); // Force reload to clear any cached data
