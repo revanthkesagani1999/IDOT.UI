@@ -42,6 +42,9 @@ export class EquipmentManagerComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchAllModelYears();
+    setTimeout(() => {
+      
+    }, 1000);
     this.fetchAllContractors();
   }
 
