@@ -71,9 +71,9 @@ export class BoardAdminComponent implements OnInit {
         this.content = data;
         this.fetchModelYears();
         setTimeout(() => {
-          
+          this.fetchAllContractors();
         }, 1000);
-        this.fetchAllContractors();
+
       },
       error: err => {
         if (err.error) {
